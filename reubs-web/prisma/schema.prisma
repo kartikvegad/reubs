@@ -1,0 +1,80 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Student {
+  id               String   @id @default(cuid())
+  enrollmentNumber String   @unique
+  name             String
+  className        String
+  section          String
+  parentName       String
+  parentPhone      String
+  parentEmail      String?
+  active           Boolean  @default(true)
+  createdAt        DateTime @default(now())
+  tickets          Ticket[]
+}
+
+model Event {
+  id            String   @id @default(cuid())
+  title         String
+  slug          String   @unique
+  summary       String
+  description   String
+  category      String
+  venue         String
+  startsAt      DateTime
+  endsAt        DateTime
+  imageUrl      String
+  priceInPaise  Int
+  totalSeats    Int
+  maxPerStudent Int      @default(5)
+  published     Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  tickets       Ticket[]
+}
+
+model Ticket {
+  id            String    @id @default(cuid())
+  eventId       String
+  event         Event     @relation(fields: [eventId], references: [id])
+  studentId     String
+  student       Student   @relation(fields: [studentId], references: [id])
+  buyerName     String
+  buyerEmail    String
+  buyerPhone    String
+  quantity      Int       @default(1)
+  seats         String    @default("")
+  amountInPaise Int
+  qrToken       String    @unique
+  status        String    @default("valid")
+  purchasedAt   DateTime  @default(now())
+  scannedAt     DateTime?
+  scannedBy     String?
+  emailSent     Boolean   @default(false)
+  whatsappSent  Boolean   @default(false)
+  notifyNote    String?
+}
+
+model Staff {
+  id           String @id @default(cuid())
+  name         String
+  email        String @unique
+  passwordHash String
+  role         String @default("scanner")
+}
+
+model NotificationLog {
+  id        String   @id @default(cuid())
+  ticketId  String
+  channel   String
+  status    String
+  detail    String
+  createdAt DateTime @default(now())
+}

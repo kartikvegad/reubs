@@ -1,0 +1,58 @@
+import { img } from "./media";
+
+export const news = [
+  {
+    slug: "annual-day-rehearsals",
+    category: "Event announcement",
+    date: "12 Sep 2026",
+    title: "Annual Day rehearsals open in the auditorium",
+    excerpt: "House teams begin stage work for Aatman. Families can book seats when the pass window opens on Events.",
+    image: img.stage,
+    body: "This is a sample announcement. Replace it with the school’s note on rehearsal days, dress code and parent viewing. Event passes are issued from the Events page against a student enrollment number.",
+  },
+  {
+    slug: "science-fair-call",
+    category: "Academic update",
+    date: "5 Sep 2026",
+    title: "Science & Innovation Fair — project call",
+    excerpt: "Secondary students are invited to register working models and investigations with their science teachers.",
+    image: img.science,
+    body: "Placeholder academic update. The office should add deadlines, class eligibility and safety rules. Do not treat this card as a live circular.",
+  },
+  {
+    slug: "sports-meet-heats",
+    category: "Student achievement",
+    date: "28 Aug 2026",
+    title: "Inter-house heats on the main ground",
+    excerpt: "Track and field practice continues ahead of the November sports meet. Parent ground passes will open closer to the date.",
+    image: img.athletics,
+    body: "Sample sports note. Publish heat results and house points here when they are official.",
+  },
+  {
+    slug: "parent-orientation",
+    category: "School announcement",
+    date: "18 Aug 2026",
+    title: "Parent orientation for new families",
+    excerpt: "A short evening in the hall to walk the campus, meet coordinators and understand the year’s rhythm.",
+    image: img.assembly,
+    body: "Sample notice. Add the confirmed date, time and who should attend. Use the enquiry form if you cannot find the circular.",
+  },
+  {
+    slug: "workshop-week",
+    category: "Workshops",
+    date: "2 Aug 2026",
+    title: "Workshop week in the senior block",
+    excerpt: "Skill sessions for middle and secondary students — communication, study habits and a taste of design thinking.",
+    image: img.workshop,
+    body: "Placeholder workshop copy. List facilitators and classes when the school confirms them.",
+  },
+  {
+    slug: "library-hours",
+    category: "Important notice",
+    date: "15 Jul 2026",
+    title: "Library hours for the term",
+    excerpt: "Reading periods and after-class reference times. Confirm with the librarian; this card is a layout sample.",
+    image: img.library,
+    body: "Replace with the current library timetable, issue rules and any closed days.",
+  },
+];

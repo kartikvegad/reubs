@@ -1,0 +1,59 @@
+@import "tailwindcss";
+
+:root {
+  --ink: #1b1410;
+  --maroon: #7a1f2b;
+  --maroon-deep: #4e1219;
+  --gold: #c4a35a;
+  --gold-soft: #e6d7b8;
+  --cream: #f6efe3;
+  --paper: #fffdf8;
+  --sage: #3d5a45;
+  --muted: #6b5b4f;
+}
+
+@theme inline {
+  --color-ink: var(--ink);
+  --color-maroon: var(--maroon);
+  --color-maroon-deep: var(--maroon-deep);
+  --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-soft);
+  --color-cream: var(--cream);
+  --color-paper: var(--paper);
+  --color-sage: var(--sage);
+  --color-muted: var(--muted);
+  --font-sans: var(--font-body);
+  --font-display: var(--font-display);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--font-body), Arial, sans-serif;
+}
+
+h1,
+h2,
+h3,
+.font-display {
+  font-family: var(--font-display), Georgia, serif;
+}
+
+a {
+  text-decoration: none;
+}
+
+.ticket-perforation {
+  background-image: radial-gradient(circle, var(--cream) 6px, transparent 7px);
+  background-position: -8px center;
+  background-size: 24px 24px;
+  background-repeat: repeat-y;
+}
