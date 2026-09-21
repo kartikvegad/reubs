@@ -5,19 +5,19 @@ import { img } from "@/lib/media";
 export const metadata: Metadata = { title: "Campus & facilities" };
 
 const facilities = [
-  [img.classroom, "Smart classrooms", "Boards, seating and a room organised for talk as well as notes. [Equipment list — office to confirm.]"],
+  [img.classroom, "Smart classrooms", "Boards, seating and a room organised for talk as well as notes. [Equipment list: office to confirm.]"],
   [img.science, "Science laboratories", "Spaces for demonstration and student practicals in the sciences, with safety as the first rule of the room."],
   [img.computer, "Computer / technology labs", "Scheduled computer work so digital skill is taught, not assumed."],
   [img.library, "Library", "A quiet collection for reading periods, reference and the habit of sitting with a book."],
   [img.chalkboard, "Mathematics learning spaces", "Rooms and corners used for board work, practice and small-group explanation."],
   [img.crafts, "Activity rooms", "Tables that can take paint, clay, models and the mess of making."],
-  [img.sports, "Sports facilities", "Ground time for games and athletics. [Specific courts and equipment — to be listed by the school.]"],
+  [img.sports, "Sports facilities", "Ground time for games and athletics. [Specific courts and equipment: to be listed by the school.]"],
   [img.concert, "Auditorium / multipurpose hall", "Assemblies, Annual Day, workshops and parent programmes."],
   [img.music, "Music & performing arts", "Practice and performance for voice, instrument and stage work."],
-  [img.art, "Art & creative spaces", "Drawing, colour and display — student work on the walls, not only in files."],
+  [img.art, "Art & creative spaces", "Drawing, colour and display: student work on the walls, not only in files."],
   [img.playground, "Playground", "Open space for younger children and informal play under supervision."],
-  [img.bus, "Transportation", "School transport where the office operates routes. [Route list — to be published.]"],
-  [img.corridor, "Safe & secure campus", "A compact site, known adults, and procedures for arrival and dispersal. [Security details — office.]"],
+  [img.bus, "Transportation", "School transport where the office operates routes. [Route list: to be published.]"],
+  [img.corridor, "Safe & secure campus", "A compact site, known adults, and procedures for arrival and dispersal. [Security details: office.]"],
   [img.teacher, "Student support areas", "Medical room, information desk and quiet places for a child who needs a pause."],
 ];
 

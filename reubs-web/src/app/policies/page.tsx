@@ -14,11 +14,11 @@ export default function PoliciesPage() {
         current circular.
       </p>
       <ul className="mt-8 space-y-2 text-muted">
-        <li>[Attendance policy — PDF]</li>
-        <li>[Uniform guidelines — PDF]</li>
-        <li>[Transport rules — PDF]</li>
-        <li>[Child protection / POSH-aligned campus note — PDF]</li>
-        <li>[Assessment & promotion — PDF]</li>
+        <li>[Attendance policy: PDF]</li>
+        <li>[Uniform guidelines: PDF]</li>
+        <li>[Transport rules: PDF]</li>
+        <li>[Child protection / POSH-aligned campus note: PDF]</li>
+        <li>[Assessment & promotion: PDF]</li>
       </ul>
       <Link href="/contact" className="mt-10 inline-block text-maroon">
         Contact the office

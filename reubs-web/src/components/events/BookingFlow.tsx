@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { formatInr } from "@/lib/school";
 import { MAX_PASSES, compareSeats } from "@/lib/seats";
@@ -16,6 +16,20 @@ type Student = {
   parentEmail?: string;
   parentPhone?: string;
 };
+
+function holdKey(slug: string) {
+  return `reubs-hold:${slug}`;
+}
+
+function getOrCreateHoldToken(slug: string) {
+  if (typeof window === "undefined") return "";
+  const key = holdKey(slug);
+  const existing = sessionStorage.getItem(key);
+  if (existing) return existing;
+  const token = crypto.randomUUID();
+  sessionStorage.setItem(key, token);
+  return token;
+}
 
 export function BookingFlow({
   slug,
@@ -33,6 +47,9 @@ export function BookingFlow({
   const [step, setStep] = useState<Step>("seats");
   const [booked, setBooked] = useState<string[]>([]);
   const [selected, setSelected] = useState<string[]>([]);
+  const [holdToken, setHoldToken] = useState("");
+  const [holdExpiresAt, setHoldExpiresAt] = useState<string | null>(null);
+  const [now, setNow] = useState(() => Date.now());
   const [enrollment, setEnrollment] = useState("");
   const [student, setStudent] = useState<Student | null>(null);
   const [buyerName, setBuyerName] = useState("");
@@ -42,22 +59,47 @@ export function BookingFlow({
   const [upiId, setUpiId] = useState("");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+  const holdTokenRef = useRef("");
 
   useEffect(() => {
-    void fetch(`/api/events/${slug}/seats`)
+    const token = getOrCreateHoldToken(slug);
+    holdTokenRef.current = token;
+    setHoldToken(token);
+  }, [slug]);
+
+  useEffect(() => {
+    if (!holdToken) return;
+    void fetch(`/api/events/${slug}/seats?holdToken=${encodeURIComponent(holdToken)}`)
       .then(async (res) => {
         if (!res.ok) return { booked: [] };
         return res.json();
       })
       .then((data) => setBooked(data.booked || []))
       .catch(() => setBooked([]));
-  }, [slug]);
+  }, [slug, holdToken]);
+
+  useEffect(() => {
+    return () => {
+      const token = holdTokenRef.current;
+      if (!token || step === "payment") return;
+      void fetch(`/api/events/${slug}/holds`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ holdToken: token }),
+        keepalive: true,
+      });
+    };
+  }, [slug, step]);
 
   const amount = priceInPaise * selected.length;
   const free = priceInPaise <= 0;
+  const holdSecondsLeft = holdExpiresAt
+    ? Math.max(0, Math.floor((new Date(holdExpiresAt).getTime() - now) / 1000))
+    : 0;
 
   function toggleSeat(id: string) {
     setError("");
+    setHoldExpiresAt(null);
     setSelected((current) => {
       if (current.includes(id)) return current.filter((seat) => seat !== id);
       if (current.length >= cap) {
@@ -66,6 +108,31 @@ export function BookingFlow({
       }
       return [...current, id].sort(compareSeats);
     });
+  }
+
+  async function holdSeats() {
+    if (!holdToken || !selected.length) return false;
+    setBusy(true);
+    setError("");
+    const res = await fetch(`/api/events/${slug}/holds`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ seats: selected, holdToken }),
+    });
+    const data = await res.json();
+    setBusy(false);
+    if (!res.ok) {
+      setError(data.error || "Could not hold these seats.");
+      if (Array.isArray(data.booked)) setBooked(data.booked);
+      return false;
+    }
+    setHoldExpiresAt(data.expiresAt);
+    return true;
+  }
+
+  async function continueFromSeats() {
+    const ok = await holdSeats();
+    if (ok) setStep("details");
   }
 
   function goToPayment(event: React.FormEvent) {
@@ -79,7 +146,7 @@ export function BookingFlow({
     if (!student) return;
     setBusy(true);
     setError("");
-    await new Promise((resolve) => setTimeout(resolve, 900));
+    await new Promise((resolve) => setTimeout(resolve, 700));
     const res = await fetch("/api/tickets/purchase", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -91,6 +158,7 @@ export function BookingFlow({
         buyerEmail,
         buyerPhone,
         payMethod,
+        holdToken,
       }),
     });
     const data = await res.json();
@@ -98,10 +166,37 @@ export function BookingFlow({
     if (!res.ok) {
       setError(data.error || "Payment could not be completed.");
       if (Array.isArray(data.booked)) setBooked(data.booked);
+      if (String(data.error || "").toLowerCase().includes("hold")) {
+        setStep("seats");
+        setHoldExpiresAt(null);
+      }
       return;
     }
+    sessionStorage.removeItem(holdKey(slug));
     router.push(`/ticket/${data.token}?confirmed=1`);
   }
+
+  useEffect(() => {
+    if (!holdExpiresAt || step === "seats") return;
+    const timer = window.setInterval(() => {
+      const stamp = Date.now();
+      setNow(stamp);
+      if (new Date(holdExpiresAt).getTime() <= stamp) {
+        setError("Your seat hold expired. Please select seats again.");
+        setHoldExpiresAt(null);
+        setStep("seats");
+      }
+    }, 1000);
+    return () => window.clearInterval(timer);
+  }, [holdExpiresAt, step]);
+
+  useEffect(() => {
+    if (!holdToken || !holdExpiresAt || step === "seats") return;
+    const refresh = window.setInterval(() => {
+      void holdSeats();
+    }, 2 * 60_000);
+    return () => window.clearInterval(refresh);
+  }, [holdToken, holdExpiresAt, step, selected]);
 
   return (
     <div className="mt-8">
@@ -125,14 +220,25 @@ export function BookingFlow({
         ))}
       </ol>
 
+      {holdExpiresAt && step !== "seats" ? (
+        <p className="mb-4 text-sm text-muted">
+          Seats held for {Math.floor(holdSecondsLeft / 60)}:
+          {String(holdSecondsLeft % 60).padStart(2, "0")} · {selected.join(", ")}
+        </p>
+      ) : null}
+
       {step === "seats" ? (
         <section className="border border-gold-soft bg-paper p-4 md:p-6">
           <div className="flex flex-wrap items-end justify-between gap-3">
             <div>
               <h2 className="font-display text-3xl">Select seats</h2>
-              <p className="text-sm text-muted">Pick up to {cap} seats. Sold seats are greyed out.</p>
+              <p className="text-sm text-muted">
+                Pick up to {cap} seats. Continuing holds them for 8 minutes.
+              </p>
             </div>
-            <p className="text-sm">{selected.length} / {cap} selected</p>
+            <p className="text-sm">
+              {selected.length} / {cap} selected
+            </p>
           </div>
           <SeatMap booked={booked} selected={selected} onToggle={toggleSeat} />
           <div className="sticky bottom-0 mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-gold-soft bg-paper py-4">
@@ -140,14 +246,11 @@ export function BookingFlow({
               {selected.length ? `${selected.join(", ")} · ${formatInr(amount)}` : "No seats yet"}
             </p>
             <button
-              disabled={!selected.length}
-              onClick={() => {
-                setError("");
-                setStep("details");
-              }}
+              disabled={!selected.length || busy}
+              onClick={() => void continueFromSeats()}
               className="rounded-full bg-maroon px-5 py-3 text-paper disabled:opacity-40"
             >
-              Continue
+              {busy ? "Holding…" : "Continue"}
             </button>
           </div>
         </section>
@@ -299,7 +402,7 @@ export function BookingFlow({
                   />
                 ) : (
                   <p className="text-sm text-muted">
-                    Demo checkout — no live bank call. The pass is issued after you confirm.
+                    Demo checkout, no live bank call. The pass is issued after you confirm.
                   </p>
                 )}
               </fieldset>

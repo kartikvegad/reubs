@@ -9,9 +9,9 @@ export const metadata: Metadata = { title: "Admissions" };
 const steps = [
   ["Enquiry", "Write or call. Tell us the class you are considering and a little about the child."],
   ["Information & counselling", "A visit or a conversation with the coordinator for that stage. Walk the campus if you can."],
-  ["Application", "Submit the form the office issues for the session. [Form — to be uploaded.]"],
-  ["Interaction / assessment", "Where the school uses an interaction or age-appropriate task, it is explained in advance — not a surprise test for the youngest."],
-  ["Documentation", "Birth certificate, photographs, previous report where applicable. [Exact list — office.]"],
+  ["Application", "Submit the form the office issues for the session. [Form: to be uploaded.]"],
+  ["Interaction / assessment", "Where the school uses an interaction or age-appropriate task, it is explained in advance, not a surprise test for the youngest."],
+  ["Documentation", "Birth certificate, photographs, previous report where applicable. [Exact list: office.]"],
   ["Admission confirmation", "A written offer, fee circular and joining date if a seat is given. We do not publish fees here until the school confirms them."],
 ];
 
@@ -32,7 +32,7 @@ export default function AdmissionsPage() {
           document lists change by session. They are not printed here as facts until the school
           supplies them.
         </p>
-        <Note>Admission dates, fee circular, age criteria — to be confirmed</Note>
+        <Note>Admission dates, fee circular, age criteria: to be confirmed</Note>
         <ol className="mt-12 grid gap-5 md:grid-cols-2">
           {steps.map(([title, copy], index) => (
             <li key={title} className="border border-gold-soft bg-paper p-6">

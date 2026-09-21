@@ -55,7 +55,7 @@ export default async function EventsPage() {
           <Eyebrow>Campus calendar</Eyebrow>
           <h1 className="mt-3 max-w-3xl font-display text-5xl md:text-6xl">Events at Reubs</h1>
           <p className="mt-4 max-w-2xl text-lg leading-8 text-gold-soft">
-            Annual Day, sports, science, workshops and family programmes — with reserved seats and a
+            Annual Day, sports, science, workshops and family programmes, with reserved seats and a
             QR pass for verified students. Listings below mix live booking with demo cards the office
             can replace.
           </p>
@@ -93,7 +93,7 @@ export default async function EventsPage() {
       <section id="calendar" className="bg-paper py-16">
         <div className="mx-auto max-w-6xl px-5">
           <h2 className="font-display text-4xl">How the year is meant to look</h2>
-          <Note>Category labels for the office — not a guarantee that every programme runs every year.</Note>
+          <Note>Category labels for the office, not a guarantee that every programme runs every year.</Note>
           <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
             {demoCalendar.map(([title, copy]) => (
               <article key={title} className="border border-gold-soft p-4">

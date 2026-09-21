@@ -8,13 +8,13 @@ export const metadata: Metadata = { title: "Student life" };
 const stories = [
   [img.athletics, "Sports", "Matches, practice and sports day. Football, cricket, athletics, basketball and other games as the year’s calendar allows."],
   [img.stage, "Cultural activities", "House programmes, festivals and the long rehearsal weeks before Annual Day."],
-  [img.music, "Music", "Listening, practice and performance — classroom music and stage work."],
+  [img.music, "Music", "Listening, practice and performance, classroom music and stage work."],
   [img.dance, "Dance", "Movement, folk and contemporary forms as offered in a given year."],
   [img.art, "Art", "Drawing, colour, display and the slow looking that art demands."],
   [img.theatre, "Theatre", "Voice, cue and ensemble. A play teaches timing as surely as a timetable does."],
   [img.science, "Science activities", "Fairs, models, demonstrations and the pleasure of a result that was not copied from a chart."],
   [img.stem, "Technology", "Computers, simple making, and digital work that has a purpose."],
-  [img.presentation, "Competitions", "Inter-house and, when scheduled, inter-school events. [Calendar — office.]"],
+  [img.presentation, "Competitions", "Inter-house and, when scheduled, inter-school events. [Calendar: office.]"],
   [img.group, "Clubs", "Interest groups that meet when the year has room for them."],
   [img.celebration, "Celebrations", "National days, festivals and the small ceremonies that mark a school year."],
   [img.trip, "Field trips", "Journeys out of Maninagar when the academic plan includes them."],
@@ -26,8 +26,8 @@ const stories = [
 const categories = [
   ["Sports", "Football, cricket, athletics, basketball and other sports as facilities and the calendar allow."],
   ["Arts & culture", "Art, music, dance, theatre and cultural programmes."],
-  ["STEM & innovation", "Science projects, technology activities, coding, robotics and innovation-based learning — where the year’s plan includes them."],
-  ["Clubs & communities", "Student clubs, interest groups and collaborative work. [Club list — to be published.]"],
+  ["STEM & innovation", "Science projects, technology activities, coding, robotics and innovation-based learning, where the year’s plan includes them."],
+  ["Clubs & communities", "Student clubs, interest groups and collaborative work. [Club list: to be published.]"],
   ["Leadership", "Student councils, competitions, presentations and duties that have a real audience."],
 ];
 
@@ -44,7 +44,7 @@ export default function LifePage() {
           </h1>
           <p className="mt-4 max-w-2xl text-lg text-gold-soft">
             A week at Reubs is supposed to include sweat, rehearsal, making and the odd public
-            moment — not only homework. Activity names below are categories the office can keep exact.
+            moment, not only homework. Activity names below are categories the office can keep exact.
           </p>
         </div>
       </section>

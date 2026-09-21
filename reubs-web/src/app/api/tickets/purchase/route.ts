@@ -1,9 +1,11 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import { assertBookingOpen } from "@/lib/admin";
+import { getActiveHold, releaseHold, unavailableSeatsForEvent } from "@/lib/holds";
 import { deliverTicket } from "@/lib/notify";
 import { prisma } from "@/lib/prisma";
-import { bookedSeatsForEvent, saveTicketSeats } from "@/lib/seatStore";
-import { MAX_PASSES, hallCapacity, isValidSeat } from "@/lib/seats";
+import { saveTicketSeats } from "@/lib/seatStore";
+import { MAX_PASSES, hallCapacity, isValidSeat, parseSeats } from "@/lib/seats";
 import { createQrToken } from "@/lib/tickets";
 
 const schema = z.object({
@@ -13,6 +15,7 @@ const schema = z.object({
   buyerName: z.string().min(2),
   buyerEmail: z.string().email(),
   buyerPhone: z.string().min(8),
+  holdToken: z.string().min(8).max(80).optional(),
 });
 
 export async function POST(request: Request) {
@@ -29,8 +32,15 @@ export async function POST(request: Request) {
   const event = await prisma.event.findUnique({
     where: { slug: body.data.slug },
   });
-  if (!event || !event.published || event.startsAt <= new Date()) {
+  if (!event) {
     return NextResponse.json({ error: "This event is not open for booking." }, { status: 400 });
+  }
+
+  try {
+    assertBookingOpen(event);
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "This event is not open for booking.";
+    return NextResponse.json({ error: message }, { status: 400 });
   }
 
   const student = await prisma.student.findUnique({
@@ -41,6 +51,17 @@ export async function POST(request: Request) {
   }
 
   try {
+    if (body.data.holdToken) {
+      const hold = await getActiveHold(event.id, body.data.holdToken);
+      if (!hold) {
+        throw new Error("Your seat hold expired. Please select seats again.");
+      }
+      const held = new Set(parseSeats(hold.seats));
+      if (seats.length !== held.size || seats.some((seat) => !held.has(seat))) {
+        throw new Error("Selected seats no longer match your hold. Please select again.");
+      }
+    }
+
     const already = await prisma.ticket.aggregate({
       where: { eventId: event.id, studentId: student.id, status: { not: "cancelled" } },
       _sum: { quantity: true },
@@ -51,7 +72,7 @@ export async function POST(request: Request) {
       throw new Error(`Only ${Math.max(0, cap - used)} pass(es) remain for this student.`);
     }
 
-    const taken = new Set(await bookedSeatsForEvent(event.id));
+    const taken = new Set(await unavailableSeatsForEvent(event.id, body.data.holdToken));
     if (seats.some((seat) => taken.has(seat))) {
       throw new Error("Those seats were just taken. Please pick again.");
     }
@@ -74,16 +95,21 @@ export async function POST(request: Request) {
         buyerPhone: body.data.buyerPhone.trim(),
         quantity: seats.length,
         amountInPaise: event.priceInPaise * seats.length,
+        paymentMethod: event.priceInPaise <= 0 ? "free" : "online",
+        paymentStatus: event.priceInPaise <= 0 ? "waived" : "paid",
         qrToken: createQrToken(),
       },
     });
 
     await saveTicketSeats(ticket.id, seats);
+    if (body.data.holdToken) {
+      await releaseHold(event.id, body.data.holdToken);
+    }
     await deliverTicket(ticket.id);
     return NextResponse.json({ token: ticket.qrToken, id: ticket.id, seats });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Could not complete booking.";
-    const booked = event ? await bookedSeatsForEvent(event.id) : [];
+    const booked = event ? await unavailableSeatsForEvent(event.id, body.data.holdToken) : [];
     return NextResponse.json({ error: message, booked }, { status: 409 });
   }
 }

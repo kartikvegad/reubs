@@ -19,10 +19,10 @@ export default function ContactPage() {
           <p>Office: {school.phone}</p>
           <p>Alternate: {school.phoneAlt}</p>
           <p>Email: {school.email}</p>
-          <p>Admissions: {school.email} · [Dedicated admissions number — to be added]</p>
+          <p>Admissions: {school.email} · [Dedicated admissions number: to be added]</p>
           <p className="text-muted">{school.hours} · Sunday closed</p>
           <p className="text-sm text-muted">
-            Social: [Instagram] [Facebook] [YouTube] — add official handles when the school confirms them.
+            Social: [Instagram] [Facebook] [YouTube]. Add official handles when the school confirms them.
           </p>
           <iframe title="Map of Reubs School, Maninagar" src={map} className="mt-6 min-h-[280px] w-full border-0" />
         </div>

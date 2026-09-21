@@ -62,11 +62,11 @@ export function EventCard({
   );
 
   if (!href) {
-    return <article className="bg-cream">{inner}</article>;
+    return <article className="interactive-card bg-cream">{inner}</article>;
   }
 
   return (
-    <Link href={href} className="group block bg-cream">
+    <Link href={href} className="interactive-card group block bg-cream">
       {inner}
     </Link>
   );

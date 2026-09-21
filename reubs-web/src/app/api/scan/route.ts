@@ -10,8 +10,9 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Please sign in as gate staff." }, { status: 401 });
   }
 
-  const { payload } = await request.json();
-  const token = parseTicketPayload(String(payload || ""));
+  const body = await request.json();
+  const token = parseTicketPayload(String(body.payload || ""));
+  const gate = String(body.gate || "Main gate").slice(0, 40);
   if (!token) {
     return NextResponse.json({ error: "Empty QR code." }, { status: 400 });
   }
@@ -22,7 +23,11 @@ export async function POST(request: Request) {
   });
 
   if (!ticket) {
-    return NextResponse.json({ result: "invalid", message: "This QR is not in the school database." });
+    return NextResponse.json({
+      result: "invalid",
+      headline: "Not recognised",
+      message: "This QR is not in the school database.",
+    });
   }
 
   const seats = await seatsForTicket(ticket.id);
@@ -30,7 +35,8 @@ export async function POST(request: Request) {
   if (ticket.status === "cancelled") {
     return NextResponse.json({
       result: "invalid",
-      message: "This pass was cancelled.",
+      headline: "Cancelled",
+      message: "This pass was cancelled by the office.",
       ticket: publicTicket(ticket, seats),
     });
   }
@@ -38,19 +44,37 @@ export async function POST(request: Request) {
   if (ticket.status === "used") {
     return NextResponse.json({
       result: "used",
-      message: `Already scanned${ticket.scannedAt ? ` at ${ticket.scannedAt.toLocaleString("en-IN")}` : ""}.`,
+      headline: "Already used",
+      message: ticket.scannedAt
+        ? `Scanned at ${ticket.scannedAt.toLocaleString("en-IN")}${ticket.scannedGate ? ` · ${ticket.scannedGate}` : ""}${ticket.scannedBy ? ` · ${ticket.scannedBy}` : ""}`
+        : "This pass was already scanned.",
+      ticket: publicTicket(ticket, seats),
+    });
+  }
+
+  if (ticket.event.endsAt < new Date()) {
+    return NextResponse.json({
+      result: "invalid",
+      headline: "Expired",
+      message: "This event has ended.",
       ticket: publicTicket(ticket, seats),
     });
   }
 
   const updated = await prisma.ticket.update({
     where: { id: ticket.id },
-    data: { status: "used", scannedAt: new Date(), scannedBy: staff.email },
+    data: {
+      status: "used",
+      scannedAt: new Date(),
+      scannedBy: staff.email,
+      scannedGate: gate,
+    },
     include: { event: true, student: true },
   });
 
   return NextResponse.json({
     result: "valid",
+    headline: "Entry approved",
     message: "Pass accepted. Welcome in.",
     ticket: publicTicket(updated, seats),
   });
@@ -62,12 +86,16 @@ function publicTicket(
     buyerName: string;
     status: string;
     scannedAt: Date | null;
+    scannedBy: string | null;
+    scannedGate: string | null;
+    qrToken: string;
     event: { title: string; venue: string };
     student: { name: string; enrollmentNumber: string; className: string; section: string };
   },
   seats: string[],
 ) {
   return {
+    code: `REUBS-${ticket.qrToken.slice(0, 6).toUpperCase()}`,
     event: ticket.event.title,
     venue: ticket.event.venue,
     student: ticket.student.name,
@@ -78,5 +106,7 @@ function publicTicket(
     seats: seats.join(", "),
     status: ticket.status,
     scannedAt: ticket.scannedAt,
+    scannedBy: ticket.scannedBy,
+    scannedGate: ticket.scannedGate,
   };
 }

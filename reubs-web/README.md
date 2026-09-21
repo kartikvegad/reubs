@@ -32,6 +32,16 @@ Open [http://localhost:3000](http://localhost:3000).
 
 Sample enrollment numbers: `REU2026-1001` (Aanya Shah) through `REU2026-1008`.
 
+### Office console (`/admin`)
+
+- Overview stats and event registration status
+- Events with per-event class/section/student breakdowns and registration deadlines
+- Ticket search/filter plus office/cash ticket issuance
+- Cash ticket request queue (approve issues a pass)
+- Students roll with standard/section filters
+- Teachers directory with class-teacher assignment
+- Operations board: windows, cash queue, seat holds, recent scans
+
 ## How a pass is issued
 
 1. Parent opens **Events** and chooses a programme.

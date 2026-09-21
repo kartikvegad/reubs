@@ -8,58 +8,113 @@ datasource db {
 }
 
 model Student {
-  id               String   @id @default(cuid())
-  enrollmentNumber String   @unique
+  id               String             @id @default(cuid())
+  enrollmentNumber String             @unique
   name             String
   className        String
   section          String
   parentName       String
   parentPhone      String
   parentEmail      String?
-  active           Boolean  @default(true)
-  createdAt        DateTime @default(now())
+  active           Boolean            @default(true)
+  createdAt        DateTime           @default(now())
   tickets          Ticket[]
+  cashRequests     CashTicketRequest[]
+}
+
+model Teacher {
+  id         String   @id @default(cuid())
+  name       String
+  email      String   @unique
+  phone      String
+  department String
+  className  String?
+  section    String?
+  active     Boolean  @default(true)
+  createdAt  DateTime @default(now())
 }
 
 model Event {
-  id            String   @id @default(cuid())
-  title         String
-  slug          String   @unique
-  summary       String
-  description   String
-  category      String
-  venue         String
-  startsAt      DateTime
-  endsAt        DateTime
-  imageUrl      String
-  priceInPaise  Int
-  totalSeats    Int
-  maxPerStudent Int      @default(5)
-  published     Boolean  @default(true)
-  createdAt     DateTime @default(now())
-  tickets       Ticket[]
+  id             String             @id @default(cuid())
+  title          String
+  slug           String             @unique
+  summary        String
+  description    String
+  category       String
+  venue          String
+  startsAt       DateTime
+  endsAt         DateTime
+  bookingOpensAt DateTime?
+  bookingClosesAt DateTime?
+  imageUrl       String
+  priceInPaise   Int
+  totalSeats     Int
+  maxPerStudent  Int                @default(5)
+  published      Boolean            @default(true)
+  createdAt      DateTime           @default(now())
+  tickets        Ticket[]
+  holds          SeatHold[]
+  cashRequests   CashTicketRequest[]
 }
 
 model Ticket {
-  id            String    @id @default(cuid())
-  eventId       String
-  event         Event     @relation(fields: [eventId], references: [id])
-  studentId     String
-  student       Student   @relation(fields: [studentId], references: [id])
-  buyerName     String
-  buyerEmail    String
-  buyerPhone    String
-  quantity      Int       @default(1)
-  seats         String    @default("")
-  amountInPaise Int
-  qrToken       String    @unique
-  status        String    @default("valid")
-  purchasedAt   DateTime  @default(now())
-  scannedAt     DateTime?
-  scannedBy     String?
-  emailSent     Boolean   @default(false)
-  whatsappSent  Boolean   @default(false)
-  notifyNote    String?
+  id              String    @id @default(cuid())
+  eventId         String
+  event           Event     @relation(fields: [eventId], references: [id])
+  studentId       String
+  student         Student   @relation(fields: [studentId], references: [id])
+  buyerName       String
+  buyerEmail      String
+  buyerPhone      String
+  quantity        Int       @default(1)
+  seats           String    @default("")
+  amountInPaise   Int
+  paymentMethod   String    @default("online")
+  paymentStatus   String    @default("paid")
+  qrToken         String    @unique
+  status          String    @default("valid")
+  officeNote      String?
+  purchasedAt     DateTime  @default(now())
+  scannedAt       DateTime?
+  scannedBy       String?
+  scannedGate     String?
+  emailSent       Boolean   @default(false)
+  whatsappSent    Boolean   @default(false)
+  notifyNote      String?
+  cashRequest     CashTicketRequest?
+}
+
+model CashTicketRequest {
+  id          String    @id @default(cuid())
+  eventId     String
+  event       Event     @relation(fields: [eventId], references: [id])
+  studentId   String
+  student     Student   @relation(fields: [studentId], references: [id])
+  buyerName   String
+  buyerEmail  String
+  buyerPhone  String
+  quantity    Int       @default(1)
+  seats       String    @default("")
+  note        String?
+  status      String    @default("pending")
+  ticketId    String?   @unique
+  ticket      Ticket?   @relation(fields: [ticketId], references: [id])
+  reviewedBy  String?
+  reviewedAt  DateTime?
+  createdAt   DateTime  @default(now())
+}
+
+model SeatHold {
+  id        String   @id @default(cuid())
+  eventId   String
+  event     Event    @relation(fields: [eventId], references: [id])
+  seats     String
+  holdToken String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([eventId, expiresAt])
+  @@index([holdToken])
 }
 
 model Staff {

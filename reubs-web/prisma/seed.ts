@@ -5,9 +5,12 @@ const prisma = new PrismaClient();
 
 async function main() {
   await prisma.notificationLog.deleteMany();
+  await prisma.cashTicketRequest.deleteMany();
+  await prisma.seatHold.deleteMany();
   await prisma.ticket.deleteMany();
   await prisma.event.deleteMany();
   await prisma.student.deleteMany();
+  await prisma.teacher.deleteMany();
   await prisma.staff.deleteMany();
 
   await prisma.staff.createMany({
@@ -104,18 +107,55 @@ async function main() {
     ],
   });
 
+  await prisma.teacher.createMany({
+    data: [
+      {
+        name: "Anjali Mehta",
+        email: "anjali.mehta@reubs.school",
+        phone: "9876500001",
+        department: "Languages",
+        className: "8",
+        section: "A",
+      },
+      {
+        name: "Rakesh Shah",
+        email: "rakesh.shah@reubs.school",
+        phone: "9876500002",
+        department: "Mathematics",
+        className: "10",
+        section: "B",
+      },
+      {
+        name: "Neha Trivedi",
+        email: "neha.trivedi@reubs.school",
+        phone: "9876500003",
+        department: "Sciences",
+        className: "12",
+        section: "A",
+      },
+      {
+        name: "Vikram Desai",
+        email: "vikram.desai@reubs.school",
+        phone: "9876500004",
+        department: "Physical education",
+      },
+    ],
+  });
+
   await prisma.event.createMany({
     data: [
       {
-        title: "Annual Day 2026 — Aatman",
+        title: "Annual Day 2026: Aatman",
         slug: "annual-day-2026",
         summary: "An evening of music, dance, and theatre by students from every house.",
         description:
-          "Aatman is this year's Annual Day — a campus-wide celebration of performance and storytelling. Families are invited to the main auditorium. Entry is by e-pass only, with a reserved seat for each verified student.",
+          "Aatman is this year's Annual Day, a campus-wide celebration of performance and storytelling. Families are invited to the main auditorium. Entry is by e-pass only, with a reserved seat for each verified student.",
         category: "Culture",
         venue: "REUBS Auditorium, Maninagar",
         startsAt: new Date("2026-10-18T17:30:00+05:30"),
         endsAt: new Date("2026-10-18T21:00:00+05:30"),
+        bookingOpensAt: new Date("2026-09-01T09:00:00+05:30"),
+        bookingClosesAt: new Date("2026-10-17T18:00:00+05:30"),
         imageUrl:
           "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1600&q=80",
         priceInPaise: 25000,
@@ -132,6 +172,8 @@ async function main() {
         venue: "Main Sports Ground",
         startsAt: new Date("2026-11-08T08:00:00+05:30"),
         endsAt: new Date("2026-11-08T16:30:00+05:30"),
+        bookingOpensAt: new Date("2026-10-01T09:00:00+05:30"),
+        bookingClosesAt: new Date("2026-11-07T18:00:00+05:30"),
         imageUrl:
           "https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=1600&q=80",
         priceInPaise: 10000,
@@ -148,6 +190,8 @@ async function main() {
         venue: "Senior Block & Smart Labs",
         startsAt: new Date("2026-12-05T09:30:00+05:30"),
         endsAt: new Date("2026-12-05T14:00:00+05:30"),
+        bookingOpensAt: new Date("2026-11-01T09:00:00+05:30"),
+        bookingClosesAt: new Date("2026-12-04T18:00:00+05:30"),
         imageUrl:
           "https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=1600&q=80",
         priceInPaise: 0,
@@ -164,6 +208,8 @@ async function main() {
         venue: "Junior Lawns",
         startsAt: new Date("2026-12-20T16:00:00+05:30"),
         endsAt: new Date("2026-12-20T20:30:00+05:30"),
+        bookingOpensAt: new Date("2026-11-20T09:00:00+05:30"),
+        bookingClosesAt: new Date("2026-12-19T18:00:00+05:30"),
         imageUrl:
           "https://images.unsplash.com/photo-1482517967863-00e15c9b44be?auto=format&fit=crop&w=1600&q=80",
         priceInPaise: 15000,
@@ -180,6 +226,8 @@ async function main() {
         venue: "Assembly Court & Auditorium",
         startsAt: new Date("2027-01-26T08:00:00+05:30"),
         endsAt: new Date("2027-01-26T11:30:00+05:30"),
+        bookingOpensAt: new Date("2027-01-01T09:00:00+05:30"),
+        bookingClosesAt: new Date("2027-01-25T18:00:00+05:30"),
         imageUrl:
           "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1600&q=80",
         priceInPaise: 0,

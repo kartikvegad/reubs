@@ -10,13 +10,13 @@ const stages = [
     name: "Primary school",
     range: "Foundational years",
     image: img.primary,
-    copy: "Literacy, numeracy, oracy and the first social habits of a classroom. Curiosity is protected. Children learn to sit with a task, share materials, and find pleasure in reading. Creativity is daily — drawing, song, making — not a Friday treat. Social development is watched as carefully as handwriting.",
+    copy: "Literacy, numeracy, oracy and the first social habits of a classroom. Curiosity is protected. Children learn to sit with a task, share materials, and find pleasure in reading. Creativity is daily (drawing, song, making), not a Friday treat. Social development is watched as carefully as handwriting.",
   },
   {
     name: "Middle school",
     range: "Conceptual years",
     image: img.classroom2,
-    copy: "Subjects widen. Students meet more demanding texts, experiments and maps. Analytical thinking is practised in small steps: observe, compare, explain. Collaboration becomes ordinary — lab pairs, group work, presentations. The aim is conceptual learning, not only coverage.",
+    copy: "Subjects widen. Students meet more demanding texts, experiments and maps. Analytical thinking is practised in small steps: observe, compare, explain. Collaboration becomes ordinary: lab pairs, group work, presentations. The aim is conceptual learning, not only coverage.",
   },
   {
     name: "Secondary school",
@@ -28,15 +28,15 @@ const stages = [
     name: "Higher secondary",
     range: "Classes 11–12",
     image: img.library,
-    copy: "Subject specialisation, academic guidance, career planning and awareness of competitive examinations. Mentorship is personal: a student should leave these years knowing how they work, not only what they scored. Personal development — stamina, judgement, courtesy — remains part of the brief.",
+    copy: "Subject specialisation, academic guidance, career planning and awareness of competitive examinations. Mentorship is personal: a student should leave these years knowing how they work, not only what they scored. Personal development (stamina, judgement, courtesy) remains part of the brief.",
   },
 ];
 
 const cbse = [
-  ["Structured curriculum", "A planned sequence of concepts, skills and revision — so a year has shape, not only a textbook list."],
+  ["Structured curriculum", "A planned sequence of concepts, skills and revision, so a year has shape, not only a textbook list."],
   ["Concept-based learning", "Students are asked to explain, apply and connect, not only to recall a definition for a test."],
   ["Continuous development", "Progress is watched across the year through classwork, practicals and periodic assessment."],
-  ["Academic assessment", "Tests and assignments are used to teach as well as to measure. [Assessment policy — office to publish.]"],
+  ["Academic assessment", "Tests and assignments are used to teach as well as to measure. [Assessment policy: office to publish.]"],
   ["Experiential learning", "Labs, projects, field work and performances sit beside classroom instruction."],
   ["Skill development", "Communication, collaboration, digital work and study habits are treated as skills to be taught."],
   ["Critical thinking", "Questions are welcomed. A good answer includes the reason it is good."],
@@ -79,7 +79,7 @@ export default function AcademicsPage() {
             teaching, and a balance of assessment and experience. We do not publish affiliation
             numbers or dates on this page until the school confirms them.
           </p>
-          <Note>CBSE affiliation number / year — to be confirmed</Note>
+          <Note>CBSE affiliation number / year: to be confirmed</Note>
           <div className="mt-10 grid gap-5 md:grid-cols-2">
             {cbse.map(([title, copy]) => (
               <article key={title} className="border border-gold-soft p-6">

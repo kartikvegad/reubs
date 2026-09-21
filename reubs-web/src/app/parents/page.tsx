@@ -15,7 +15,7 @@ export default function ParentsPage() {
           <Eyebrow>Information hub</Eyebrow>
           <h1 className="mt-3 font-display text-5xl">For parents and students</h1>
           <p className="mt-4 max-w-2xl text-lg text-gold-soft">
-            Practical links for the school week — notices, events, meetings and the documents the
+            Practical links for the school week, notices, events, meetings and the documents the
             office issues. Circulars from the desk take precedence until live files are uploaded here.
           </p>
         </div>
@@ -30,11 +30,11 @@ export default function ParentsPage() {
           <ul className="mt-6 space-y-3 text-maroon">
             <li><Link href="/news">Notices & announcements</Link></li>
             <li><Link href="/events">Events & pass booking</Link></li>
-            <li><Link href="/contact">Parent meetings — ask the office for dates</Link></li>
+            <li><Link href="/contact">Parent meetings: ask the office for dates</Link></li>
             <li><Link href="/policies">School policies</Link></li>
-            <li><Link href="/contact">Important documents — [to be uploaded]</Link></li>
+            <li><Link href="/contact">Important documents: [to be uploaded]</Link></li>
             <li><Link href="/contact">Contact information</Link></li>
-            <li><span className="text-muted">Academic calendar — [PDF to be added]</span></li>
+            <li><span className="text-muted">Academic calendar: [PDF to be added]</span></li>
           </ul>
         </article>
         <article className="border border-gold-soft bg-paper p-8">
@@ -48,7 +48,7 @@ export default function ParentsPage() {
             <li><Link href="/life">Competitions & activities</Link></li>
             <li><Link href="/news">Announcements</Link></li>
             <li><Link href="/life">Clubs</Link></li>
-            <li><Link href="/academics">Academic resources — [to be added]</Link></li>
+            <li><Link href="/academics">Academic resources: [to be added]</Link></li>
             <li><Link href="/gallery">Gallery</Link></li>
             <li><Link href="/achievements">Achievements</Link></li>
           </ul>

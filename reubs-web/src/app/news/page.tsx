@@ -14,7 +14,7 @@ export default function NewsPage() {
         Sample cards showing how announcements, academic notes and event news will appear. The
         office should replace headlines and dates with current information.
       </p>
-      <Note>Demo content for layout — not an official notice board until the school takes it over.</Note>
+      <Note>Demo content for layout, not an official notice board until the school takes it over.</Note>
       <div className="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
         {news.map((item) => (
           <Link key={item.slug} href={`/news/${item.slug}`} className="bg-paper">

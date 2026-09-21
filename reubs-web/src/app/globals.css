@@ -37,14 +37,25 @@ html {
 body {
   background: var(--cream);
   color: var(--ink);
-  font-family: var(--font-body), Arial, sans-serif;
+  font-family: var(--font-body), "Segoe UI", sans-serif;
+  font-size: clamp(0.95rem, 0.9rem + 0.2vw, 1.05rem);
+  letter-spacing: -0.011em;
+  line-height: 1.65;
 }
 
 h1,
 h2,
 h3,
 .font-display {
-  font-family: var(--font-display), Georgia, serif;
+  font-family: var(--font-display), "Palatino Linotype", Georgia, serif;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  text-wrap: balance;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
 }
 
 a {
@@ -56,4 +67,212 @@ a {
   background-position: -8px center;
   background-size: 24px 24px;
   background-repeat: repeat-y;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.section-pad {
+  padding-block: clamp(3rem, 2.4rem + 2.5vw, 5rem);
+}
+
+.nav-link {
+  position: relative;
+  padding: 0.4rem 0.55rem;
+  font-size: 0.875rem;
+  color: color-mix(in srgb, var(--ink) 80%, transparent);
+  transition: color 0.25s ease;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0.55rem;
+  right: 0.55rem;
+  bottom: 0.1rem;
+  height: 1.5px;
+  background: var(--maroon);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.28s ease;
+}
+
+.nav-link:hover,
+.nav-link.is-active {
+  color: var(--maroon);
+}
+
+.nav-link:hover::after,
+.nav-link.is-active::after {
+  transform: scaleX(1);
+}
+
+.btn-primary,
+.btn-secondary,
+.btn-gold,
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  min-height: 2.75rem;
+  padding-inline: 1.25rem;
+  transition:
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    color 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.btn-primary {
+  background: var(--maroon);
+  color: var(--paper);
+}
+
+.btn-primary:hover {
+  background: var(--maroon-deep);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px -16px rgba(78, 18, 25, 0.7);
+}
+
+.btn-secondary {
+  border: 1px solid color-mix(in srgb, var(--gold-soft) 80%, white);
+  color: inherit;
+}
+
+.btn-secondary:hover {
+  background: color-mix(in srgb, white 12%, transparent);
+  border-color: var(--gold);
+  transform: translateY(-1px);
+}
+
+.btn-gold {
+  background: var(--gold);
+  color: var(--ink);
+}
+
+.btn-gold:hover {
+  background: color-mix(in srgb, var(--gold) 82%, white);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px -16px rgba(196, 163, 90, 0.85);
+}
+
+.btn-outline {
+  border: 1px solid var(--maroon);
+  color: var(--maroon);
+}
+
+.btn-outline:hover {
+  background: var(--maroon);
+  color: var(--paper);
+  transform: translateY(-1px);
+}
+
+.text-link {
+  color: var(--maroon);
+  transition: color 0.25s ease;
+}
+
+.text-link:hover {
+  color: var(--maroon-deep);
+}
+
+.interactive-card {
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
+}
+
+.photo-frame img {
+  transition: transform 0.7s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .interactive-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 18px 36px -28px rgba(27, 20, 16, 0.4);
+  }
+
+  .interactive-card:hover .photo-frame img,
+  .group:hover .photo-frame img {
+    transform: scale(1.03);
+  }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s ease;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.faq-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.35s ease;
+}
+
+.faq-panel.is-open {
+  grid-template-rows: 1fr;
+}
+
+.faq-panel > div {
+  overflow: hidden;
+}
+
+.hero-copy > * {
+  opacity: 0;
+  transform: translateY(12px);
+  animation: hero-rise 0.7s ease forwards;
+}
+
+.hero-copy > *:nth-child(1) { animation-delay: 0.05s; }
+.hero-copy > *:nth-child(2) { animation-delay: 0.12s; }
+.hero-copy > *:nth-child(3) { animation-delay: 0.2s; }
+.hero-copy > *:nth-child(4) { animation-delay: 0.28s; }
+
+@keyframes hero-rise {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .reveal,
+  .hero-copy > *,
+  .interactive-card,
+  .photo-frame img,
+  .nav-link::after,
+  .btn-primary,
+  .btn-secondary,
+  .btn-gold,
+  .btn-outline,
+  .faq-panel {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
 }

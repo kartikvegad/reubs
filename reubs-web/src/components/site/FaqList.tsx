@@ -9,7 +9,7 @@ const faqs = [
   },
   {
     q: "Is Reubs a CBSE school?",
-    a: "The school follows a CBSE-oriented academic path, with concept-based learning and continuous development. Official affiliation particulars, when published by the school, will appear here. [Affiliation number — to be confirmed]",
+    a: "The school follows a CBSE-oriented academic path, with concept-based learning and continuous development. Official affiliation particulars, when published by the school, will appear here. [Affiliation number: to be confirmed]",
   },
   {
     q: "How can I enquire about admission?",
@@ -56,14 +56,23 @@ export function FaqList() {
           <div key={item.q}>
             <button
               type="button"
-              className="flex w-full items-start justify-between gap-4 px-5 py-4 text-left"
+              className="flex w-full items-start justify-between gap-4 px-5 py-4 text-left transition-colors duration-200 hover:bg-cream/70"
               onClick={() => setOpen(active ? null : index)}
               aria-expanded={active}
             >
               <span className="font-medium">{item.q}</span>
-              <span className="text-maroon">{active ? "–" : "+"}</span>
+              <span
+                className={`mt-0.5 text-maroon transition-transform duration-300 ${active ? "rotate-45" : ""}`}
+                aria-hidden
+              >
+                +
+              </span>
             </button>
-            {active ? <p className="px-5 pb-5 leading-7 text-muted">{item.a}</p> : null}
+            <div className={`faq-panel ${active ? "is-open" : ""}`}>
+              <div>
+                <p className="px-5 pb-5 leading-7 text-muted">{item.a}</p>
+              </div>
+            </div>
           </div>
         );
       })}

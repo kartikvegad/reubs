@@ -35,7 +35,7 @@ export const demoPastEvents = [
     slug: "parent-orientation-2026",
     title: "Parent orientation",
     category: "Parent orientation",
-    summary: "A walk through the year’s rhythm for new families. Sample card — not a live booking.",
+    summary: "A walk through the year’s rhythm for new families. Sample card, not a live booking.",
     date: "18 Aug 2026",
     time: "5:00 PM",
     venue: "REUBS Auditorium",

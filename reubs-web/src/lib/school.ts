@@ -10,7 +10,7 @@ export const school = {
   phoneAlt: "+91 98700 96242",
   email: "info@reubsschoolonline.com",
   address: "Prabhu Park, 7/A, Punit Maharaj Road, opp. Ramji Mandir, Balvatika, Maninagar, Ahmedabad, Gujarat 380008",
-  hours: "Monday–Saturday, 8:00 AM – 3:00 PM",
+  hours: "Monday to Saturday, 8:00 AM to 3:00 PM",
   mapsQuery: "Reubs School Prabhu Park Punit Maharaj Road Maninagar Ahmedabad",
 };
 

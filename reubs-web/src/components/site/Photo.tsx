@@ -16,8 +16,16 @@ export function Photo({
   const positioned = /\b(absolute|relative|fixed)\b/.test(className);
 
   return (
-    <div className={`${positioned ? "" : "relative"} overflow-hidden bg-gold-soft ${className}`}>
-      <Image src={src} alt={alt} fill className="object-cover" sizes={sizes} priority={priority} />
+    <div className={`photo-frame ${positioned ? "" : "relative"} overflow-hidden bg-gold-soft ${className}`}>
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        className="object-cover"
+        sizes={sizes}
+        priority={priority}
+        loading={priority ? "eager" : undefined}
+      />
     </div>
   );
 }

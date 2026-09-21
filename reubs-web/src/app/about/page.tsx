@@ -8,12 +8,12 @@ export const metadata: Metadata = { title: "About" };
 
 const why = [
   ["Student-focused learning", "Teachers work with class groups that are meant to stay knowable. The day is paced so a child is seen, not processed."],
-  ["Strong academic foundations", "Literacy, numeracy, science and language are built carefully — especially in the years before board pressure arrives."],
+  ["Strong academic foundations", "Literacy, numeracy, science and language are built carefully, especially in the years before board pressure arrives."],
   ["Values-based education", "Respect for elders, honesty in work, and care for the campus are taught as ordinary habits, not slogans."],
   ["Co-curricular breadth", "Ground, stage, studio and lab sit on the same calendar as tests. A Reubs week is supposed to have more than one kind of effort in it."],
   ["A modern learning environment", "Smart classrooms, laboratories and a library support the CBSE-oriented path. [Facility list to be kept current by the office.]"],
   ["Sports and creative development", "Physical education and the arts are not optional extras. They are how confidence and discipline become visible."],
-  ["Confidence and communication", "Assemblies, presentations and house work give students practice in speaking clearly — in English, and in the languages of home."],
+  ["Confidence and communication", "Assemblies, presentations and house work give students practice in speaking clearly, in English, and in the languages of home."],
 ];
 
 export default function AboutPage() {
@@ -26,7 +26,7 @@ export default function AboutPage() {
           <Eyebrow>Maninagar · Ahmedabad</Eyebrow>
           <h1 className="mt-3 max-w-3xl font-display text-5xl md:text-6xl">About Reubs</h1>
           <p className="mt-4 max-w-2xl text-lg text-gold-soft">
-            {school.name} — a co-educational English-medium campus with a CBSE-oriented academic path.
+            {school.name}: a co-educational English-medium campus with a CBSE-oriented academic path.
           </p>
         </div>
       </section>
@@ -49,19 +49,19 @@ export default function AboutPage() {
           <p>
             Academic development is the spine: reading, writing, number, science, social science and
             languages, taught with enough patience for concepts to settle. Character development is
-            the posture of the day — how students enter a room, how they treat a younger child, how
+            the posture of the day, how students enter a room, how they treat a younger child, how
             they finish work they would rather postpone.
           </p>
           <p>
             Creativity is given time: drawing, making, music, theatre. Discipline is expected without
             theatre of its own. Confidence is practised in assembly and on stage. Communication is
             English-medium instruction plus Gujarati as a living language of the city. Leadership is
-            small and real — a house duty, a science stall, a welcome at the gate on Annual Day.
+            small and real, a house duty, a science stall, a welcome at the gate on Annual Day.
           </p>
           <p>
             Technology and future readiness mean computer work, labs, and the habit of asking what a
             fact is for. Co-curricular life is not a brochure list; it is the second half of a
-            serious education. The campus is meant to feel safe and encouraging — known adults,
+            serious education. The campus is meant to feel safe and encouraging, known adults,
             known routes, a medical room, and eyes on the ground at dispersal.
           </p>
         </div>
@@ -77,13 +77,13 @@ export default function AboutPage() {
           <div>
             <Eyebrow>Leadership</Eyebrow>
             <h2 className="mt-3 font-display text-4xl">Message from the Principal</h2>
-            <p className="mt-2 text-sm text-muted">[Principal&apos;s name — to be confirmed by the school]</p>
+            <p className="mt-2 text-sm text-muted">[Principal&apos;s name: to be confirmed by the school]</p>
             <div className="mt-6 space-y-4 leading-8 text-muted">
               <p>
                 A school is a promise made every morning. At Reubs we promise a day in which a child
                 is taught well, spoken to with respect, and asked to try things that are slightly
                 harder than yesterday. Education here is not a race through chapters. It is the slow
-                work of building a mind that can read, reason and revise — and a character that can
+                work of building a mind that can read, reason and revise, and a character that can
                 wait, share and tell the truth.
               </p>
               <p>

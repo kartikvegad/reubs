@@ -5,13 +5,13 @@ import { img } from "@/lib/media";
 export const metadata: Metadata = { title: "Achievements" };
 
 const areas = [
-  [img.library, "Academic achievements", "Board results, subject distinctions and classroom milestones — to be listed when the school releases them."],
-  [img.sports, "Sports achievements", "House meets, athletics and team results. [Season record — office.]"],
-  [img.stage, "Cultural achievements", "Music, dance, theatre and festival work. [Awards — to be confirmed.]"],
+  [img.library, "Academic achievements", "Board results, subject distinctions and classroom milestones, to be listed when the school releases them."],
+  [img.sports, "Sports achievements", "House meets, athletics and team results. [Season record: office.]"],
+  [img.stage, "Cultural achievements", "Music, dance, theatre and festival work. [Awards: to be confirmed.]"],
   [img.science, "Science & innovation", "Fairs, models and technology projects presented by students."],
   [img.presentation, "Competitions", "Inter-house and external events as entered in a given year."],
   [img.students, "Student awards", "Certificates and recognitions the school chooses to publish."],
-  [img.teacher, "Faculty recognition", "Teaching awards and long service — [to be confirmed]."],
+  [img.teacher, "Faculty recognition", "Teaching awards and long service, [to be confirmed]."],
   [img.campus, "School achievements", "Campus milestones and community work, without invented rankings."],
 ];
 

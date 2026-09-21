@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import { assertBookingOpen } from "@/lib/admin";
 import { MAX_PASSES } from "@/lib/seats";
 import { prisma } from "@/lib/prisma";
 
@@ -16,8 +17,15 @@ export async function POST(request: Request) {
   }
 
   const event = await prisma.event.findUnique({ where: { slug: body.data.slug } });
-  if (!event || !event.published) {
+  if (!event) {
     return NextResponse.json({ error: "Event not found." }, { status: 404 });
+  }
+
+  try {
+    assertBookingOpen(event);
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "This event is not open for booking.";
+    return NextResponse.json({ error: message }, { status: 400 });
   }
 
   const student = await prisma.student.findUnique({
