@@ -1,77 +1,57 @@
-# REUBS School website & event passes
+# reubs-web
 
-Website for **REUBS Primary & Higher Secondary School**, a CBSE English-medium campus in Maninagar, Ahmedabad. Families can read about the school, book event passes (BookMyShow-style), and receive a QR e-ticket. Gate staff scan those codes on a separate scanner screen.
+Next.js app for the REUBS school site, event booking, QR passes, gate scanner, and office console.
 
-## What is included
-
-- School pages: home, about, academics, admissions, gallery, contact
-- Upcoming events with seat counts and pass prices
-- Student check at checkout (enrollment / roll number must match the school roll)
-- QR e-ticket stored in the database with buyer details
-- Email + WhatsApp delivery when SMTP / Twilio are configured
-- Staff scanner at `/scan` (phone camera)
-- Office console at `/admin` (events, tickets, student roll, delivery log)
-
-## Run locally
+## Setup
 
 ```bash
-cd reubs-web
 npm install
+cp .env.example .env
 npm run db:setup
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+http://localhost:3000
 
-## Demo logins and students
+## Routes
+
+| Path | Purpose |
+| --- | --- |
+| `/` | School website |
+| `/events` | Event list and seat booking |
+| `/ticket/[token]` | QR pass (PDF download) |
+| `/scan` | Gate scanner |
+| `/admin` | Office console |
+
+## Demo accounts
 
 | Role | Email | Password |
 | --- | --- | --- |
-| Office admin | `admin@reubs.school` | `ReubsAdmin@2026` |
-| Gate scanner | `scanner@reubs.school` | `ScanGate@2026` |
+| Admin | `admin@reubs.school` | `ReubsAdmin@2026` |
+| Scanner | `scanner@reubs.school` | `ScanGate@2026` |
 
-Sample enrollment numbers: `REU2026-1001` (Aanya Shah) through `REU2026-1008`.
+Enrollment samples: `REU2026-1001` … `REU2026-1008`
 
-### Office console (`/admin`)
+## Environment
 
-- Overview stats and event registration status
-- Events with per-event class/section/student breakdowns and registration deadlines
-- Ticket search/filter plus office/cash ticket issuance
-- Cash ticket request queue (approve issues a pass)
-- Students roll with standard/section filters
-- Teachers directory with class-teacher assignment
-- Operations board: windows, cash queue, seat holds, recent scans
+Copy `.env.example` to `.env`:
 
-## How a pass is issued
+| Variable | Required | Notes |
+| --- | --- | --- |
+| `DATABASE_URL` | yes | SQLite by default (`file:./dev.db`) |
+| `AUTH_SECRET` | yes | Staff session signing |
+| `APP_URL` | yes | Public base URL |
+| `SMTP_*` / `MAIL_FROM` | no | Email ticket delivery |
+| `TWILIO_*` | no | WhatsApp ticket delivery |
 
-1. Parent opens **Events** and chooses a programme.
-2. They pick up to 5 seats on the hall map (BookMyShow-style).
-3. They enter the student enrollment number. Only current students can continue.
-4. Buyer name, email, and WhatsApp number are collected.
-5. Payment (UPI / card / net banking demo, or confirm if free).
-6. A confirmation page shows the QR e-ticket with seat numbers.
-7. Email and WhatsApp go out if keys are set.
+Online payment is bypassed in checkout; the pass is still issued.
 
-Without SMTP or Twilio, the ticket is still stored. The delivery log in `/admin` shows `skipped`.
+## Scripts
 
-## WhatsApp and email
-
-Copy `.env.example` to `.env` and set:
-
-- SMTP: `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `MAIL_FROM`
-- WhatsApp (Twilio): `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_WHATSAPP_FROM`
-
-The WhatsApp message includes event details and a link to the QR pass. Email embeds the QR image.
-
-## Scanner
-
-1. Sign in at `/scan`.
-2. Allow the camera.
-3. Point at the ticket QR (`REUBS:<token>`).
-4. A valid pass is marked used. A second scan is rejected.
-
-The scanner and public site share one database, so they can be deployed as two hosts later if needed.
-
-## Stack
-
-Next.js, Tailwind, Prisma, SQLite. Swap `DATABASE_URL` to Postgres for production.
+```bash
+npm run dev
+npm run build
+npm run start
+npm run db:setup   # prisma db push + seed
+npm run db:seed
+```
