@@ -42,8 +42,10 @@ export function Footer() {
   if (pathname.startsWith("/scan") || pathname.startsWith("/admin")) return null;
 
   return (
-    <footer className="mt-auto border-t border-gold-soft/40 bg-maroon-deep text-paper">
-      <div className="mx-auto max-w-6xl px-4 pt-12 pb-8 sm:px-5 sm:pt-14">
+    <footer className="mt-auto border-t border-white/10 bg-maroon-deep text-paper">
+      <div className="relative overflow-hidden">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(196,163,90,0.14),transparent_45%)]" />
+        <div className="relative mx-auto max-w-6xl px-4 pt-14 pb-8 sm:px-5 sm:pt-16">
         <div className="flex flex-col gap-10 md:flex-row md:items-start md:justify-between md:gap-12">
           <div className="max-w-md shrink-0 md:max-w-sm lg:max-w-md">
             <Link href="/" className="group inline-flex items-center gap-3">
@@ -61,7 +63,8 @@ export function Footer() {
             </Link>
 
             <p className="mt-5 text-sm leading-7 text-gold-soft">
-              An English-medium campus where education, character and future readiness grow together.
+              English-medium education from the early years to Class 12, with a clear focus on
+              academics, character and student wellbeing.
             </p>
 
             <dl className="mt-7 space-y-4 text-sm">
@@ -104,7 +107,7 @@ export function Footer() {
                 Admission enquiry
               </Link>
               <Link href="/events" className="btn-secondary text-sm">
-                Book seats
+                Events
               </Link>
             </div>
           </div>
@@ -153,6 +156,7 @@ export function Footer() {
             </Link>
           </div>
         </div>
+      </div>
       </div>
     </footer>
   );

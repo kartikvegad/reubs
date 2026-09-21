@@ -95,8 +95,8 @@ export async function POST(request: Request) {
         buyerPhone: body.data.buyerPhone.trim(),
         quantity: seats.length,
         amountInPaise: event.priceInPaise * seats.length,
-        paymentMethod: event.priceInPaise <= 0 ? "free" : "online",
-        paymentStatus: event.priceInPaise <= 0 ? "waived" : "paid",
+        paymentMethod: event.priceInPaise <= 0 ? "free" : "bypass",
+        paymentStatus: event.priceInPaise <= 0 ? "waived" : "bypassed",
         qrToken: createQrToken(),
       },
     });

@@ -87,6 +87,7 @@ export default async function AdminTicketsPage({
         <select name="payment" defaultValue={payment} className="border border-gold-soft bg-paper px-3 py-2 text-sm">
           <option value="">All payments</option>
           <option value="online">Online</option>
+          <option value="bypass">Bypassed</option>
           <option value="cash">Cash</option>
           <option value="free">Free</option>
         </select>

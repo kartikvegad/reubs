@@ -23,7 +23,7 @@ export default async function CheckoutPage({
 
   return (
     <main className="mx-auto max-w-5xl px-5 py-10">
-      <p className="text-xs uppercase tracking-[0.2em] text-maroon">Book seats</p>
+      <p className="text-xs uppercase tracking-[0.2em] text-maroon">Seat registration</p>
       <h1 className="mt-2 font-display text-4xl">{event.title}</h1>
       <p className="mt-2 text-muted">
         {formatEventDate(event.startsAt)} · {event.venue} · {formatInr(event.priceInPaise)} ·{" "}

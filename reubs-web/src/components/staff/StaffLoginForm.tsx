@@ -36,9 +36,11 @@ export function StaffLoginForm({ next }: { next: string }) {
         <input
           required
           type="email"
+          autoComplete="username"
+          inputMode="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="mt-2 w-full border border-white/20 bg-white/5 px-3 py-3 text-paper"
+          className="mt-2 w-full border border-white/20 bg-white/5 px-3 py-3.5 text-base text-paper outline-none focus:border-gold"
         />
       </label>
       <label className="block text-sm">
@@ -46,13 +48,17 @@ export function StaffLoginForm({ next }: { next: string }) {
         <input
           required
           type="password"
+          autoComplete="current-password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="mt-2 w-full border border-white/20 bg-white/5 px-3 py-3 text-paper"
+          className="mt-2 w-full border border-white/20 bg-white/5 px-3 py-3.5 text-base text-paper outline-none focus:border-gold"
         />
       </label>
-      <button disabled={busy} className="w-full rounded-full bg-gold px-5 py-3 text-ink">
-        {busy ? "Signing in…" : "Enter scanner"}
+      <button
+        disabled={busy}
+        className="w-full rounded-full bg-gold px-5 py-3.5 text-base font-medium text-ink disabled:opacity-60"
+      >
+        {busy ? "Signing in…" : next.startsWith("/scan") ? "Open scanner" : "Enter console"}
       </button>
       {error ? <p className="text-sm text-gold">{error}</p> : null}
     </form>

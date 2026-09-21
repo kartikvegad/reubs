@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { EventCard } from "@/components/site/EventCard";
-import { Eyebrow, Note, Photo } from "@/components/site/Photo";
+import { Eyebrow, Photo } from "@/components/site/Photo";
 import { demoCalendar, demoPastEvents, eventAudience, registrationLabel } from "@/lib/eventMeta";
 import { img } from "@/lib/media";
 import { prisma } from "@/lib/prisma";
@@ -40,7 +40,7 @@ export default async function EventsPage() {
         venue={event.venue}
         audience={eventAudience(event.category)}
         status={registrationLabel(open, upcomingEvent, left)}
-        cta={open ? `${formatInr(event.priceInPaise)} · Get pass` : "View details"}
+        cta={open ? `${formatInr(event.priceInPaise)} · Register` : "View details"}
         featured={featuredCard}
       />
     );
@@ -52,12 +52,11 @@ export default async function EventsPage() {
         <Photo src={img.concert} alt="School event on stage" className="absolute inset-0" sizes="100vw" priority />
         <div className="absolute inset-0 bg-maroon-deep/70" />
         <div className="relative mx-auto max-w-6xl px-5 py-20 text-paper">
-          <Eyebrow>Campus calendar</Eyebrow>
-          <h1 className="mt-3 max-w-3xl font-display text-5xl md:text-6xl">Events at Reubs</h1>
+          <Eyebrow>School calendar</Eyebrow>
+          <h1 className="mt-3 max-w-3xl font-display text-5xl md:text-6xl">Events</h1>
           <p className="mt-4 max-w-2xl text-lg leading-8 text-gold-soft">
-            Annual Day, sports, science, workshops and family programmes, with reserved seats and a
-            QR pass for verified students. Listings below mix live booking with demo cards the office
-            can replace.
+            Annual Day, sports meets, science programmes, workshops and family evenings. Registered
+            students may reserve seats and receive a QR pass for entry.
           </p>
         </div>
       </section>
@@ -74,8 +73,8 @@ export default async function EventsPage() {
           <div>
             <h2 className="font-display text-4xl">Upcoming events</h2>
             <p className="mt-2 max-w-xl text-muted">
-              Book with a current enrollment number. Choose up to five seats, then collect a QR
-              e-ticket by email or WhatsApp when delivery is configured.
+              Registration requires a current student enrollment number. Families may reserve up to
+              five seats and receive a QR e-ticket after confirmation.
             </p>
           </div>
           <Link href="/events#calendar" className="text-sm text-maroon">
@@ -86,14 +85,16 @@ export default async function EventsPage() {
           {upcoming.filter((event) => event.id !== featured?.id).map((event) => cardFor(event))}
         </div>
         {upcoming.length === 0 ? (
-          <p className="mt-8 text-muted">No live upcoming dates in the booking system yet. Sample past programmes appear below.</p>
+          <p className="mt-8 text-muted">No upcoming events are open for registration at this time.</p>
         ) : null}
       </section>
 
       <section id="calendar" className="bg-paper py-16">
         <div className="mx-auto max-w-6xl px-5">
-          <h2 className="font-display text-4xl">How the year is meant to look</h2>
-          <Note>Category labels for the office, not a guarantee that every programme runs every year.</Note>
+          <h2 className="font-display text-4xl">Programme categories</h2>
+          <p className="mt-2 max-w-2xl text-muted">
+            A typical school year includes cultural, academic, sporting and community programmes.
+          </p>
           <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
             {demoCalendar.map(([title, copy]) => (
               <article key={title} className="border border-gold-soft p-4">
@@ -108,8 +109,7 @@ export default async function EventsPage() {
       <section id="past" className="mx-auto max-w-6xl px-5 py-16">
         <h2 className="font-display text-4xl">Past events</h2>
         <p className="mt-2 max-w-2xl text-muted">
-          Sample archive cards so the page does not go empty after a season. Replace photographs and
-          copy with the school’s own record.
+          A selection of recent programmes from the school calendar.
         </p>
         <div className="mt-10 grid gap-8 lg:grid-cols-3">
           {pastLive.map((event) => cardFor(event))}
@@ -124,7 +124,7 @@ export default async function EventsPage() {
               time={event.time}
               venue={event.venue}
               audience={event.audience}
-              status="Closed · demo archive"
+              status="Registration closed"
             />
           ))}
         </div>

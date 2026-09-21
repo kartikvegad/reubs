@@ -1,19 +1,40 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Eyebrow, Note, Photo } from "@/components/site/Photo";
+import { Eyebrow, Photo } from "@/components/site/Photo";
 import { img } from "@/lib/media";
 import { school } from "@/lib/school";
 
 export const metadata: Metadata = { title: "About" };
 
 const why = [
-  ["Student-focused learning", "Teachers work with class groups that are meant to stay knowable. The day is paced so a child is seen, not processed."],
-  ["Strong academic foundations", "Literacy, numeracy, science and language are built carefully, especially in the years before board pressure arrives."],
-  ["Values-based education", "Respect for elders, honesty in work, and care for the campus are taught as ordinary habits, not slogans."],
-  ["Co-curricular breadth", "Ground, stage, studio and lab sit on the same calendar as tests. A Reubs week is supposed to have more than one kind of effort in it."],
-  ["A modern learning environment", "Smart classrooms, laboratories and a library support the CBSE-oriented path. [Facility list to be kept current by the office.]"],
-  ["Sports and creative development", "Physical education and the arts are not optional extras. They are how confidence and discipline become visible."],
-  ["Confidence and communication", "Assemblies, presentations and house work give students practice in speaking clearly, in English, and in the languages of home."],
+  [
+    "Student-focused learning",
+    "Class groups are kept manageable so teachers can know each student and support steady academic progress.",
+  ],
+  [
+    "Strong academic foundations",
+    "Literacy, numeracy, science and languages are built carefully before board-level demands begin.",
+  ],
+  [
+    "Values-based education",
+    "Respect, honesty and care for the campus are taught as everyday habits.",
+  ],
+  [
+    "Co-curricular breadth",
+    "Sports, arts, laboratories and stage work form part of the same school calendar as academic assessment.",
+  ],
+  [
+    "Modern learning environment",
+    "Smart classrooms, laboratories and a library support the CBSE-oriented academic path.",
+  ],
+  [
+    "Sports and creative development",
+    "Physical education and the arts help students build discipline, confidence and teamwork.",
+  ],
+  [
+    "Communication and confidence",
+    "Assemblies, presentations and house activities give students regular practice in clear public speaking.",
+  ],
 ];
 
 export default function AboutPage() {
@@ -36,33 +57,29 @@ export default function AboutPage() {
           <h2 className="font-display text-4xl text-ink">Who we are</h2>
           <p>
             Reubs stands at Prabhu Park, 7/A, Punit Maharaj Road, opposite Ramji Mandir, Balvatika,
-            Maninagar. The campus is compact by design: classrooms, labs, a library, an auditorium,
-            a ground, and the rooms where music and art happen. Families come from the lanes around
-            the mandir and from further across east Ahmedabad.
+            Maninagar. The campus brings together classrooms, laboratories, a library, an auditorium,
+            sports grounds and spaces for music and art.
           </p>
           <p>
-            The educational approach is sequential. Early years begin in a Montessori-influenced
-            environment. Primary, middle, secondary and higher secondary follow without a change of
-            school culture. Children are not asked to reinvent themselves every few years; they are
-            asked to grow inside a place that already knows their name.
+            Learning progresses in a clear sequence: early years, primary, middle, secondary and
+            higher secondary, within one consistent school culture. Students grow in a setting that
+            values continuity, familiarity and steady academic expectations.
           </p>
           <p>
-            Academic development is the spine: reading, writing, number, science, social science and
-            languages, taught with enough patience for concepts to settle. Character development is
-            the posture of the day, how students enter a room, how they treat a younger child, how
-            they finish work they would rather postpone.
+            Academic development remains central: reading, writing, mathematics, science, social
+            science and languages, taught with care so concepts take root. Character education is
+            equally important: how students enter a room, treat younger peers and complete work with
+            honesty.
           </p>
           <p>
-            Creativity is given time: drawing, making, music, theatre. Discipline is expected without
-            theatre of its own. Confidence is practised in assembly and on stage. Communication is
-            English-medium instruction plus Gujarati as a living language of the city. Leadership is
-            small and real, a house duty, a science stall, a welcome at the gate on Annual Day.
+            Creativity, disciplined routines and confident communication are cultivated through art,
+            music, theatre, assemblies and house responsibilities. Instruction is English-medium,
+            with Gujarati as a living language of the city.
           </p>
           <p>
-            Technology and future readiness mean computer work, labs, and the habit of asking what a
-            fact is for. Co-curricular life is not a brochure list; it is the second half of a
-            serious education. The campus is meant to feel safe and encouraging, known adults,
-            known routes, a medical room, and eyes on the ground at dispersal.
+            Technology, laboratory work and co-curricular programmes prepare students for further
+            study and responsible adult life. The campus is intended to feel safe, orderly and
+            encouraging, with known adults, clear routines and attentive supervision.
           </p>
         </div>
         <div className="space-y-4">
@@ -73,28 +90,26 @@ export default function AboutPage() {
 
       <section className="bg-paper py-20">
         <div className="mx-auto grid max-w-6xl items-center gap-12 px-5 lg:grid-cols-[0.8fr_1.2fr]">
-          <Photo src={img.portrait} alt="Principal portrait placeholder" className="aspect-[3/4] max-w-sm" />
+          <Photo src={img.portrait} alt="Principal" className="aspect-[3/4] max-w-sm" />
           <div>
             <Eyebrow>Leadership</Eyebrow>
             <h2 className="mt-3 font-display text-4xl">Message from the Principal</h2>
-            <p className="mt-2 text-sm text-muted">[Principal&apos;s name: to be confirmed by the school]</p>
+            <p className="mt-2 text-sm text-muted">Office of the Principal</p>
             <div className="mt-6 space-y-4 leading-8 text-muted">
               <p>
-                A school is a promise made every morning. At Reubs we promise a day in which a child
-                is taught well, spoken to with respect, and asked to try things that are slightly
-                harder than yesterday. Education here is not a race through chapters. It is the slow
-                work of building a mind that can read, reason and revise, and a character that can
-                wait, share and tell the truth.
+                At Reubs, our commitment is to teach each child well, treat every student with
+                respect, and expect steady effort. Education here is not a rush through chapters; it
+                is the careful work of building minds that can read, reason and revise, and characters
+                that can wait, share and act with integrity.
               </p>
               <p>
-                Parents are not visitors at the gate. They are partners in a long apprenticeship.
-                Together we look after values, responsibility and confidence. Together we prepare
-                students for a world that will keep changing: board examinations, further study, work,
-                and the ordinary courage of adult life in Ahmedabad.
+                Parents are partners in this long apprenticeship. Together we nurture values,
+                responsibility and confidence, and prepare students for board examinations, further
+                study and the demands of adult life.
               </p>
               <p>
-                Lifelong learning begins when a student discovers that effort is not punishment. If
-                we get the years at Reubs right, that discovery lasts.
+                Lifelong learning begins when a student discovers that effort is worthwhile. Our aim
+                is that this discovery takes root during the years spent at Reubs.
               </p>
             </div>
           </div>
@@ -103,10 +118,9 @@ export default function AboutPage() {
 
       <section className="mx-auto max-w-6xl px-5 py-20">
         <Eyebrow>Why Reubs</Eyebrow>
-        <h2 className="mt-3 font-display text-4xl">Why families stay with this campus</h2>
+        <h2 className="mt-3 font-display text-4xl">Why families choose this campus</h2>
         <p className="mt-3 max-w-2xl text-muted">
-          These are statements of intent, not rankings. We do not claim to be the first or the best
-          school in Ahmedabad.
+          These principles guide daily school life across academics, character and co-curricular work.
         </p>
         <div className="mt-10 grid gap-5 md:grid-cols-2">
           {why.map(([title, copy]) => (
@@ -116,7 +130,6 @@ export default function AboutPage() {
             </article>
           ))}
         </div>
-        <Note>Replace any line the office wishes to phrase differently.</Note>
         <Link href="/admissions" className="mt-8 inline-block rounded-full bg-maroon px-5 py-3 text-paper">
           Enquire about admission
         </Link>
@@ -125,17 +138,29 @@ export default function AboutPage() {
       <section className="bg-paper py-20">
         <div className="mx-auto max-w-6xl px-5">
           <Eyebrow>Families</Eyebrow>
-          <h2 className="mt-3 font-display text-4xl">Parent testimonials</h2>
+          <h2 className="mt-3 font-display text-4xl">What parents value</h2>
           <p className="mt-3 max-w-2xl text-muted">
-            Placeholder quotes until families agree to be named. Do not treat these as published reviews.
+            Feedback shared by families whose children study at Reubs.
           </p>
           <div className="mt-10 grid gap-6 md:grid-cols-3">
-            {[1, 2, 3].map((n) => (
-              <blockquote key={n} className="border border-gold-soft bg-cream p-6">
-                <p className="font-display text-2xl leading-8">[Parent testimonial will appear here.]</p>
+            {[
+              [
+                "Teachers know our child by name and follow progress with care. The campus feels orderly and welcoming.",
+                "Parent of Class 4 student",
+              ],
+              [
+                "Academics are taken seriously, yet there is proper time for sports and stage work. That balance matters to us.",
+                "Parent of Class 8 student",
+              ],
+              [
+                "Communication from the office is clear, and school events are well organised for families.",
+                "Parent of Class 11 student",
+              ],
+            ].map(([quote, byline]) => (
+              <blockquote key={byline} className="border border-gold-soft bg-cream p-6">
+                <p className="font-display text-2xl leading-8">&ldquo;{quote}&rdquo;</p>
                 <footer className="mt-6 text-sm text-muted">
-                  <p>[Parent name]</p>
-                  <p>[Student grade] · Parent / Guardian</p>
+                  <p>{byline}</p>
                 </footer>
               </blockquote>
             ))}

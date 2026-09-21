@@ -88,7 +88,7 @@ export default async function EventDetailPage({ params }: Props) {
               href={`/events/${event.slug}/checkout`}
               className="mt-6 block rounded-full bg-maroon px-5 py-3 text-center text-paper"
             >
-              Register / Get pass
+              Register
             </Link>
           ) : (
             <p className="mt-6 text-sm text-maroon">Booking is closed for this event.</p>

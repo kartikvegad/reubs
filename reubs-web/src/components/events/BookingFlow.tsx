@@ -60,6 +60,7 @@ export function BookingFlow({
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const holdTokenRef = useRef("");
+  const purchaseDoneRef = useRef(false);
 
   useEffect(() => {
     const token = getOrCreateHoldToken(slug);
@@ -78,10 +79,11 @@ export function BookingFlow({
       .catch(() => setBooked([]));
   }, [slug, holdToken]);
 
+  // Release hold only when leaving the booking page — not when changing steps.
   useEffect(() => {
     return () => {
       const token = holdTokenRef.current;
-      if (!token || step === "payment") return;
+      if (!token || purchaseDoneRef.current) return;
       void fetch(`/api/events/${slug}/holds`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
@@ -89,7 +91,7 @@ export function BookingFlow({
         keepalive: true,
       });
     };
-  }, [slug, step]);
+  }, [slug]);
 
   const amount = priceInPaise * selected.length;
   const free = priceInPaise <= 0;
@@ -98,35 +100,33 @@ export function BookingFlow({
     : 0;
 
   function toggleSeat(id: string) {
-    setError("");
-    setHoldExpiresAt(null);
-    setSelected((current) => {
-      if (current.includes(id)) return current.filter((seat) => seat !== id);
-      if (current.length >= cap) {
-        setError(`You can select up to ${cap} seats.`);
-        return current;
-      }
-      return [...current, id].sort(compareSeats);
+    setSelected((prev) => {
+      if (prev.includes(id)) return prev.filter((s) => s !== id);
+      if (prev.length >= cap) return prev;
+      return [...prev, id].sort(compareSeats);
     });
   }
 
-  async function holdSeats() {
+  async function holdSeats(options?: { quiet?: boolean }) {
     if (!holdToken || !selected.length) return false;
-    setBusy(true);
-    setError("");
+    if (!options?.quiet) {
+      setBusy(true);
+      setError("");
+    }
     const res = await fetch(`/api/events/${slug}/holds`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ seats: selected, holdToken }),
+      body: JSON.stringify({ holdToken, seats: selected }),
     });
-    const data = await res.json();
-    setBusy(false);
+    const data = await res.json().catch(() => ({}));
+    if (!options?.quiet) setBusy(false);
     if (!res.ok) {
-      setError(data.error || "Could not hold these seats.");
+      setError(data.error || "Could not hold those seats.");
       if (Array.isArray(data.booked)) setBooked(data.booked);
       return false;
     }
     setHoldExpiresAt(data.expiresAt);
+    if (Array.isArray(data.booked)) setBooked(data.booked);
     return true;
   }
 
@@ -139,6 +139,7 @@ export function BookingFlow({
     event.preventDefault();
     setError("");
     setStep("payment");
+    void holdSeats({ quiet: true });
   }
 
   async function pay(event: React.FormEvent) {
@@ -146,7 +147,17 @@ export function BookingFlow({
     if (!student) return;
     setBusy(true);
     setError("");
-    await new Promise((resolve) => setTimeout(resolve, 700));
+
+    // Refresh hold so payment confirm never races an expired / released hold.
+    const held = await holdSeats({ quiet: true });
+    if (!held) {
+      setBusy(false);
+      setStep("seats");
+      return;
+    }
+
+    // Simulated checkout: payment UI is shown, live gateway call is skipped.
+    await new Promise((resolve) => setTimeout(resolve, 450));
     const res = await fetch("/api/tickets/purchase", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -161,7 +172,7 @@ export function BookingFlow({
         holdToken,
       }),
     });
-    const data = await res.json();
+    const data = await res.json().catch(() => ({}));
     setBusy(false);
     if (!res.ok) {
       setError(data.error || "Payment could not be completed.");
@@ -172,6 +183,11 @@ export function BookingFlow({
       }
       return;
     }
+    if (!data.token) {
+      setError("Pass was created but could not be opened. Check Tickets in the office.");
+      return;
+    }
+    purchaseDoneRef.current = true;
     sessionStorage.removeItem(holdKey(slug));
     router.push(`/ticket/${data.token}?confirmed=1`);
   }
@@ -205,7 +221,7 @@ export function BookingFlow({
           ["seats", "1 Seats"],
           ["details", "2 Details"],
           ["payment", "3 Payment"],
-          ["done", "4 Confirm"],
+          ["done", "4 Pass"],
         ].map(([key, label]) => (
           <li
             key={key}
@@ -372,49 +388,63 @@ export function BookingFlow({
                 {student.name} · {student.enrollmentNumber} · Class {student.className}-{student.section}
               </p>
             ) : null}
+
             {!free ? (
-              <fieldset className="mt-6 space-y-3">
-                <legend className="text-sm">Pay with</legend>
-                {(
-                  [
-                    ["upi", "UPI"],
-                    ["card", "Debit / Credit card"],
-                    ["netbanking", "Net banking"],
-                  ] as const
-                ).map(([value, label]) => (
-                  <label key={value} className="flex items-center gap-3 border border-gold-soft px-3 py-3">
+              <>
+                <fieldset className="mt-6 space-y-3">
+                  <legend className="text-sm">Pay with</legend>
+                  {(
+                    [
+                      ["upi", "UPI"],
+                      ["card", "Debit / Credit card"],
+                      ["netbanking", "Net banking"],
+                    ] as const
+                  ).map(([value, label]) => (
+                    <label key={value} className="flex items-center gap-3 border border-gold-soft px-3 py-3">
+                      <input
+                        type="radio"
+                        name="pay"
+                        checked={payMethod === value}
+                        onChange={() => setPayMethod(value)}
+                      />
+                      {label}
+                    </label>
+                  ))}
+                  {payMethod === "upi" ? (
                     <input
-                      type="radio"
-                      name="pay"
-                      checked={payMethod === value}
-                      onChange={() => setPayMethod(value)}
+                      value={upiId}
+                      onChange={(e) => setUpiId(e.target.value)}
+                      placeholder="name@upi (optional for now)"
+                      className="w-full border border-gold-soft bg-cream px-3 py-3"
                     />
-                    {label}
-                  </label>
-                ))}
-                {payMethod === "upi" ? (
-                  <input
-                    required
-                    value={upiId}
-                    onChange={(e) => setUpiId(e.target.value)}
-                    placeholder="name@upi"
-                    className="w-full border border-gold-soft bg-cream px-3 py-3"
-                  />
-                ) : (
-                  <p className="text-sm text-muted">
-                    Demo checkout, no live bank call. The pass is issued after you confirm.
+                  ) : (
+                    <p className="text-sm text-muted">
+                      Card / net banking fields will connect to the live gateway later.
+                    </p>
+                  )}
+                </fieldset>
+                <div className="mt-4 border border-gold-soft bg-cream px-4 py-3 text-sm leading-6">
+                  <p className="font-medium">Payment gateway skipped for now</p>
+                  <p className="text-muted">
+                    Choose a method, then continue. The pass is issued immediately without a live bank
+                    charge.
                   </p>
-                )}
-              </fieldset>
+                </div>
+              </>
             ) : (
               <p className="mt-4 text-sm text-muted">This event is free. Confirm to issue the e-ticket.</p>
             )}
+
             <div className="mt-6 flex gap-3">
               <button type="button" onClick={() => setStep("details")} className="px-4 py-3 text-sm">
                 Back
               </button>
               <button disabled={busy} className="rounded-full bg-maroon px-5 py-3 text-paper">
-                {busy ? "Processing…" : free ? "Confirm booking" : `Pay ${formatInr(amount)}`}
+                {busy
+                  ? "Issuing pass…"
+                  : free
+                    ? "Confirm booking"
+                    : `Pay ${formatInr(amount)} & get pass`}
               </button>
             </div>
           </div>
@@ -423,8 +453,10 @@ export function BookingFlow({
             <p className="mt-3 font-display text-2xl">{title}</p>
             <p className="mt-2">Seats: {selected.join(", ")}</p>
             <p>{selected.length === 1 ? "1 pass" : `${selected.length} passes`}</p>
+            <p className="mt-2">Buyer: {buyerName}</p>
+            <p className="text-muted">{buyerEmail}</p>
             <p className="mt-4 text-lg">{formatInr(amount)}</p>
-            <p className="mt-4 text-muted">QR e-ticket will open after confirmation.</p>
+            <p className="mt-4 text-muted">Your QR pass opens on the next screen, with PDF download.</p>
           </aside>
         </form>
       ) : null}

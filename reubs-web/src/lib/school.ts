@@ -1,7 +1,7 @@
 export const school = {
   name: "REUBS Primary & Higher Secondary School",
   shortName: "REUBS",
-  tagline: "An inspiring, friendly campus in the heart of Maninagar.",
+  tagline: "A co-educational CBSE campus in Maninagar, Ahmedabad.",
   board: "CBSE",
   established: 1965,
   medium: "English",

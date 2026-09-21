@@ -6,5 +6,5 @@ export default async function ScanPage() {
   const staff = await getStaffSession();
   if (!staff) redirect("/scan/login");
 
-  return <ScannerApp staffName={staff.name} />;
+  return <ScannerApp staffName={staff.name} staffRole={staff.role} />;
 }
